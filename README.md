@@ -313,9 +313,27 @@ The response preserves the original `filename`, `score`, `matched`, and `missing
 
 Each item in `analysis.requirements` contains the requirement text, category, mandatory/preferred flags, classification, similarity, evidence strength, evidence text, and explanation.
 
-## Docker deployment
+## Render deployment
 
-The Docker image installs Python dependencies, installs the frontend dependencies, trains the TF-IDF artifact, builds React, and serves the finished application through FastAPI:
+The repository includes both a Render-ready Dockerfile and a `render.yaml` Blueprint. The container installs Python and frontend dependencies, trains the TF-IDF artifact, downloads the embedding model during the image build, builds React, and serves the finished application through FastAPI.
+
+### Blueprint deployment
+
+1. Push the repository to GitHub.
+2. In Render, choose **New > Blueprint**.
+3. Select the repository and approve the `render.yaml` configuration.
+4. Render creates a Docker web service named `matchline`.
+5. Open the generated Render URL after the health check reports `healthy`.
+
+Render supplies the `PORT` environment variable automatically. The container uses that value and exposes `GET /api/health` for health checks. No manual port environment variable is required.
+
+### Manual Docker web service
+
+Create a Render **Web Service**, select **Docker**, and use the repository root as the Docker context. The included Dockerfile is detected automatically. Set the health check path to `/api/health` if Render does not detect it.
+
+### Local Docker test
+
+The same image can be tested locally:
 
 ```bash
 docker build -t matchline .
@@ -324,7 +342,7 @@ docker run --rm -p 8000:8000 matchline
 
 Open `http://localhost:8000`.
 
-The container health check uses `GET /api/health`.
+The image build downloads `all-MiniLM-L6-v2` once so the first production request does not need to fetch model weights. This increases build time and image size, but reduces cold-start latency and avoids a runtime dependency on Hugging Face availability.
 
 ## Testing and limitations
 
