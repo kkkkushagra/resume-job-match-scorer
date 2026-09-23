@@ -9,6 +9,7 @@ Two methods are provided:
     zero model download, good lightweight fallback).
 """
 from functools import lru_cache
+import logging
 from pathlib import Path
 
 import joblib
@@ -18,6 +19,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 MODEL_NAME = "all-MiniLM-L6-v2"
 TFIDF_MODEL_PATH = Path(__file__).resolve().parent.parent / "models" / "resume_tfidf.joblib"
+logger = logging.getLogger("resume_match")
 
 
 @lru_cache(maxsize=1)
@@ -25,7 +27,10 @@ def _load_embedding_model():
     """Load and cache the sentence embedding model (downloaded once)."""
     from sentence_transformers import SentenceTransformer
 
-    return SentenceTransformer(MODEL_NAME)
+    logger.info("Loading embedding model: %s", MODEL_NAME)
+    model = SentenceTransformer(MODEL_NAME)
+    logger.info("Embedding model loaded and cached: %s", MODEL_NAME)
+    return model
 
 
 def semantic_similarity_score(resume_text: str, jd_text: str) -> float:

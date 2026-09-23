@@ -327,6 +327,8 @@ The repository includes both a Render-ready Dockerfile and a `render.yaml` Bluep
 
 Render supplies the `PORT` environment variable automatically. The container uses that value and exposes `GET /api/health` for health checks. No manual port environment variable is required.
 
+The semantic embedding runtime requires more than Render's 512 MB free instance limit in this project. The Blueprint uses the `standard` plan so the model and PyTorch runtime have sufficient memory. A 512 MB deployment can use the TF-IDF mode only if the semantic model is removed from the runtime path.
+
 ### Manual Docker web service
 
 Create a Render **Web Service**, select **Docker**, and use the repository root as the Docker context. The included Dockerfile is detected automatically. Set the health check path to `/api/health` if Render does not detect it.

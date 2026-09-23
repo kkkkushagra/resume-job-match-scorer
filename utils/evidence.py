@@ -138,7 +138,7 @@ def _unique_chunks(chunks: list[tuple[str, str]]) -> list[tuple[str, str]]:
         if key and key not in seen:
             seen.add(key)
             result.append((text, section))
-    return result[:80]
+    return result[:40]
 
 
 def _evidence_factor(text: str, section: str) -> float:
@@ -164,7 +164,7 @@ def _encode_resume_chunks(chunks: tuple[str, ...]) -> np.ndarray:
     model = _load_embedding_model()
     return model.encode(
         list(chunks),
-        batch_size=32,
+        batch_size=64,
         convert_to_numpy=True,
         normalize_embeddings=True,
         show_progress_bar=False,
@@ -183,7 +183,7 @@ def prepare_requirement_context(
     model = _load_embedding_model()
     embeddings = model.encode(
         [requirement.text for requirement in requirements],
-        batch_size=32,
+        batch_size=64,
         convert_to_numpy=True,
         normalize_embeddings=True,
         show_progress_bar=False,
@@ -246,7 +246,7 @@ def analyze_resume_match(
             model = _load_embedding_model()
             requirement_embeddings = model.encode(
                 requirement_texts,
-                batch_size=32,
+                batch_size=64,
                 convert_to_numpy=True,
                 normalize_embeddings=True,
                 show_progress_bar=False,

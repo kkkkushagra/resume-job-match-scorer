@@ -2,6 +2,7 @@ services:
   - type: web
     name: matchline
     runtime: docker
+    plan: standard
     dockerfilePath: ./Dockerfile
     dockerContext: .
     healthCheckPath: /api/health
