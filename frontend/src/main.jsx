@@ -94,8 +94,17 @@ function App() {
     formData.append('method', method);
     try {
       const response = await fetch(`${API_URL}/api/score`, { method: 'POST', body: formData });
-      const payload = await response.json();
-      if (!response.ok) throw new Error(payload.detail || 'Unable to score resumes.');
+      const responseText = await response.text();
+      let payload = null;
+      if (responseText.trim()) {
+        try {
+          payload = JSON.parse(responseText);
+        } catch {
+          throw new Error(`Scoring service returned an invalid response (${response.status}).`);
+        }
+      }
+      if (!response.ok) throw new Error(payload?.detail || `Scoring failed with status ${response.status}.`);
+      if (!payload?.results) throw new Error('Scoring service returned an empty response. Check the deployed API logs.');
       setResults(payload.results);
     } catch (requestError) {
       setError(requestError.message || 'Something went wrong while scoring.');
