@@ -1,0 +1,20 @@
+Data Scientist - Machine Learning
+
+We are looking for a Data Scientist to join our growing analytics team.
+
+Responsibilities:
+- Build and deploy Machine Learning and Deep Learning models for production use cases
+- Perform Data Analysis and Data Visualization to uncover business insights
+- Work with large datasets using Python, Pandas, and NumPy
+- Develop NLP models for text classification and sentiment analysis
+- Collaborate with engineering to deploy models on AWS
+- Use Docker and CI/CD pipelines to ship models reliably
+- Communicate findings clearly to non-technical stakeholders
+
+Requirements:
+- 3+ years of experience with Python and SQL
+- Strong background in Machine Learning, Scikit-learn, and TensorFlow or PyTorch
+- Experience with Natural Language Processing and Feature Engineering
+- Familiarity with AWS and Docker
+- Strong Communication and Problem Solving skills
+- Experience with A/B Testing is a plus

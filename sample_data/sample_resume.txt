@@ -1,0 +1,20 @@
+Jordan Lee
+Data Analyst
+
+Summary:
+Data Analyst with 3 years of experience turning raw data into business insights.
+Comfortable working across the data stack from SQL to dashboards.
+
+Experience:
+- Built dashboards and reports using Python, Pandas, and Tableau
+- Wrote complex SQL queries to extract and clean data from PostgreSQL
+- Ran A/B Testing experiments to evaluate product changes
+- Used Excel and Power BI for ad-hoc stakeholder reporting
+- Strong Communication and Teamwork with cross-functional partners
+- Automated recurring reports, saving the team several hours per week
+
+Skills: Python, SQL, Pandas, Tableau, Power BI, Excel, PostgreSQL, Communication,
+Problem Solving, Teamwork, A/B Testing
+
+Education:
+B.S. in Statistics

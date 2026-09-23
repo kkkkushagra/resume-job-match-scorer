@@ -1,0 +1,66 @@
+{
+  "Programming Languages": [
+    "Python", "Java", "JavaScript", "TypeScript", "C++", "C#", "C", "Go", "Rust",
+    "Ruby", "PHP", "Swift", "Kotlin", "Scala", "R", "MATLAB", "SQL", "Bash", "Perl", "Dart"
+  ],
+  "Web & App Frameworks": [
+    "React", "Angular", "Vue", "Next.js", "Node.js", "Express", "Django", "Flask",
+    "FastAPI", "Spring Boot", "Ruby on Rails", "ASP.NET", "Laravel", "jQuery",
+    "Svelte", "React Native", "Flutter"
+  ],
+  "Data Science & Machine Learning": [
+    "Machine Learning", "Deep Learning", "NLP", "Natural Language Processing",
+    "Computer Vision", "TensorFlow", "PyTorch", "Keras", "Scikit-learn",
+    "Pandas", "NumPy", "Data Analysis", "Data Visualization", "Statistics",
+    "A/B Testing", "Feature Engineering", "Hugging Face", "LLM", "Prompt Engineering",
+    "MLOps", "Reinforcement Learning", "Time Series Analysis", "OpenCV"
+  ],
+  "Databases": [
+    "MySQL", "PostgreSQL", "MongoDB", "Redis", "SQLite", "Oracle", "Microsoft SQL Server",
+    "Cassandra", "DynamoDB", "Elasticsearch", "Firebase", "Snowflake", "BigQuery"
+  ],
+  "Cloud & DevOps": [
+    "AWS", "Azure", "Google Cloud Platform", "GCP", "Docker", "Kubernetes",
+    "Terraform", "Jenkins", "CI/CD", "Git", "GitHub Actions", "GitLab CI",
+    "Ansible", "Linux", "Nginx", "Serverless", "Cloud Architecture"
+  ],
+  "Testing & QA": [
+    "Unit Testing", "Selenium", "Pytest", "Jest", "Test Automation", "QA",
+    "Manual Testing", "Cypress", "JUnit", "Load Testing"
+  ],
+  "Project & Product Management": [
+    "Agile", "Scrum", "Kanban", "JIRA", "Project Management", "Product Management",
+    "Stakeholder Management", "Roadmapping", "Requirements Gathering", "PMP",
+    "Risk Management", "Budgeting"
+  ],
+  "Design & UX": [
+    "Figma", "Sketch", "Adobe XD", "UI Design", "UX Design", "Wireframing",
+    "Prototyping", "User Research", "Adobe Photoshop", "Adobe Illustrator",
+    "Design Systems", "Interaction Design"
+  ],
+  "Marketing & Sales": [
+    "SEO", "SEM", "Google Analytics", "Content Marketing", "Social Media Marketing",
+    "Email Marketing", "CRM", "Salesforce", "HubSpot", "Lead Generation",
+    "Digital Marketing", "Brand Management", "Market Research", "Copywriting"
+  ],
+  "Finance & Accounting": [
+    "Financial Modeling", "Financial Analysis", "Excel", "Budgeting", "Forecasting",
+    "Bookkeeping", "QuickBooks", "SAP", "Accounts Payable", "Accounts Receivable",
+    "GAAP", "Auditing", "Tax Preparation", "Valuation"
+  ],
+  "HR & Recruitment": [
+    "Talent Acquisition", "Recruiting", "Onboarding", "HRIS", "Performance Management",
+    "Employee Relations", "Applicant Tracking System", "ATS", "Workday",
+    "Compensation & Benefits", "Sourcing", "Interviewing", "HR Policy"
+  ],
+  "Soft Skills": [
+    "Communication", "Leadership", "Problem Solving", "Teamwork", "Time Management",
+    "Critical Thinking", "Adaptability", "Collaboration", "Negotiation",
+    "Presentation Skills", "Mentoring", "Conflict Resolution", "Decision Making"
+  ],
+  "Tools & Productivity": [
+    "Microsoft Excel", "Microsoft PowerPoint", "Microsoft Word", "Google Sheets",
+    "Slack", "Notion", "Confluence", "Trello", "Asana", "Tableau", "Power BI",
+    "Looker"
+  ]
+}
