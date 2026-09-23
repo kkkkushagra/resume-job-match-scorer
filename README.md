@@ -184,7 +184,7 @@ Run training with:
 python scripts\train_resume_model.py
 ```
 
-The generated artifact is ignored by Git and should be regenerated whenever the resume dataset changes. Docker also runs this training step during image creation.
+The generated artifact is ignored by Git and should be regenerated whenever the resume dataset changes.
 
 Important distinction: this dataset does not contain paired job descriptions and relevance labels, so it trains the lightweight lexical vocabulary but does not fine-tune the embedding model or prove ranking accuracy. A reliable accuracy benchmark requires labeled job-description/resume pairs.
 
@@ -195,7 +195,7 @@ Important distinction: this dataset does not contain paired job descriptions and
 | **React** | Provides a responsive upload and result interface without coupling UI state to the Python runtime. |
 | **Vite** | Provides fast frontend development and a small production build. |
 | **FastAPI** | Exposes typed, asynchronous upload and scoring endpoints with automatic API validation. |
-| **Uvicorn** | Runs the FastAPI application in development and production. |
+| **Uvicorn** | Runs the FastAPI application locally. |
 | **Sentence-Transformers** | Converts requirements and resume evidence into semantic vectors for meaning-based matching. |
 | **all-MiniLM-L6-v2** | A relatively small general-purpose embedding model with practical local inference cost. |
 | **scikit-learn** | Supplies TF-IDF vectorization and cosine similarity operations. |
@@ -228,7 +228,6 @@ resume-job-match-scorer/
 │   ├── evidence.py                # Requirement extraction and evidence scoring
 │   └── skills.py                   # Taxonomy extraction and legacy skill lists
 ├── requirements.txt
-├── Dockerfile
 └── README.md
 ```
 
@@ -263,14 +262,14 @@ npm run dev
 
 The frontend runs at `http://localhost:5173` and sends development requests to the FastAPI server.
 
-### Run the production frontend build
+### Build the frontend locally
 
 ```powershell
 cd frontend
 npm run build
 ```
 
-When `frontend/dist` exists, FastAPI serves the built frontend from the same application in production.
+When `frontend/dist` exists, FastAPI serves the built frontend locally from the same application.
 
 ## API reference
 
@@ -313,39 +312,6 @@ The response preserves the original `filename`, `score`, `matched`, and `missing
 
 Each item in `analysis.requirements` contains the requirement text, category, mandatory/preferred flags, classification, similarity, evidence strength, evidence text, and explanation.
 
-## Render deployment
-
-The repository includes both a Render-ready Dockerfile and a `render.yaml` Blueprint. The container installs Python and frontend dependencies, trains the TF-IDF artifact, downloads the embedding model during the image build, builds React, and serves the finished application through FastAPI.
-
-### Blueprint deployment
-
-1. Push the repository to GitHub.
-2. In Render, choose **New > Blueprint**.
-3. Select the repository and approve the `render.yaml` configuration.
-4. Render creates a Docker web service named `matchline`.
-5. Open the generated Render URL after the health check reports `healthy`.
-
-Render supplies the `PORT` environment variable automatically. The container uses that value and exposes `GET /api/health` for health checks. No manual port environment variable is required.
-
-The semantic embedding runtime requires more than Render's 512 MB free instance limit in this project. The Blueprint uses the `standard` plan so the model and PyTorch runtime have sufficient memory. A 512 MB deployment can use the TF-IDF mode only if the semantic model is removed from the runtime path.
-
-### Manual Docker web service
-
-Create a Render **Web Service**, select **Docker**, and use the repository root as the Docker context. The included Dockerfile is detected automatically. Set the health check path to `/api/health` if Render does not detect it.
-
-### Local Docker test
-
-The same image can be tested locally:
-
-```bash
-docker build -t matchline .
-docker run --rm -p 8000:8000 matchline
-```
-
-Open `http://localhost:8000`.
-
-The image build downloads `all-MiniLM-L6-v2` once so the first production request does not need to fetch model weights. This increases build time and image size, but reduces cold-start latency and avoids a runtime dependency on Hugging Face availability.
-
 ## Testing and limitations
 
 The matching engine has been checked against:
@@ -357,6 +323,6 @@ The matching engine has been checked against:
 - Responsibility and project evidence
 - Missing mandatory technologies
 - API response compatibility
-- React production builds
+- React frontend builds
 
 The most important remaining evaluation step is a labeled benchmark containing job descriptions, resumes, and human relevance judgments. That benchmark can be used to tune thresholds and weights with precision, recall, and ranking metrics instead of relying only on semantic spot checks.
