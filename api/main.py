@@ -8,7 +8,7 @@ from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
 from utils.parser import extract_text
-from utils.evidence import analyze_resume_match
+from utils.evidence import analyze_resume_match, prepare_requirement_context
 from utils.skills import load_taxonomy, skill_gap_analysis
 
 
@@ -77,9 +77,21 @@ async def score_resumes(
         resume_names.append(filename)
         resume_texts.append(await read_upload(resume))
 
+    requirements, requirement_embeddings = prepare_requirement_context(
+        jd_text,
+        method=method,
+        taxonomy=TAXONOMY,
+    )
     results = []
     for filename, resume_text in zip(resume_names, resume_texts):
-        analysis = analyze_resume_match(resume_text, jd_text, method=method, taxonomy=TAXONOMY)
+        analysis = analyze_resume_match(
+            resume_text,
+            jd_text,
+            method=method,
+            taxonomy=TAXONOMY,
+            requirements=requirements,
+            requirement_embeddings=requirement_embeddings,
+        )
         matched, missing = skill_gap_analysis(resume_text, jd_text, TAXONOMY)
         results.append(
             {

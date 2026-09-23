@@ -138,7 +138,7 @@ def _unique_chunks(chunks: list[tuple[str, str]]) -> list[tuple[str, str]]:
         if key and key not in seen:
             seen.add(key)
             result.append((text, section))
-    return result[:160]
+    return result[:80]
 
 
 def _evidence_factor(text: str, section: str) -> float:
@@ -162,7 +162,33 @@ def _evidence_factor(text: str, section: str) -> float:
 @lru_cache(maxsize=128)
 def _encode_resume_chunks(chunks: tuple[str, ...]) -> np.ndarray:
     model = _load_embedding_model()
-    return model.encode(list(chunks), convert_to_numpy=True, normalize_embeddings=True)
+    return model.encode(
+        list(chunks),
+        batch_size=32,
+        convert_to_numpy=True,
+        normalize_embeddings=True,
+        show_progress_bar=False,
+    )
+
+
+def prepare_requirement_context(
+    jd_text: str,
+    method: str = "semantic",
+    taxonomy: dict[str, list[str]] | None = None,
+) -> tuple[list[Requirement], np.ndarray | None]:
+    taxonomy = taxonomy or load_taxonomy()
+    requirements = extract_requirements(jd_text, taxonomy)
+    if method != "semantic" or not requirements:
+        return requirements, None
+    model = _load_embedding_model()
+    embeddings = model.encode(
+        [requirement.text for requirement in requirements],
+        batch_size=32,
+        convert_to_numpy=True,
+        normalize_embeddings=True,
+        show_progress_bar=False,
+    )
+    return requirements, embeddings
 
 
 def _exact_skill_match(requirement: str, evidence: str, taxonomy: dict[str, list[str]]) -> bool:
@@ -200,9 +226,11 @@ def analyze_resume_match(
     jd_text: str,
     method: str = "semantic",
     taxonomy: dict[str, list[str]] | None = None,
+    requirements: list[Requirement] | None = None,
+    requirement_embeddings: np.ndarray | None = None,
 ) -> dict:
     taxonomy = taxonomy or load_taxonomy()
-    requirements = extract_requirements(jd_text, taxonomy)
+    requirements = requirements or extract_requirements(jd_text, taxonomy)
     chunks = _resume_chunks(resume_text)
     if not requirements or not chunks:
         return {"overall_score": 0.0, "requirements": [], "strong_matches": [], "partial_matches": [], "related_matches": [], "missing": [], "mandatory_missing": []}
@@ -214,8 +242,15 @@ def analyze_resume_match(
         vectors = vectorizer.transform([*requirement_texts, *evidence_texts])
         matrix = cosine_similarity(vectors[: len(requirements)], vectors[len(requirements) :])
     else:
-        model = _load_embedding_model()
-        requirement_embeddings = model.encode(requirement_texts, convert_to_numpy=True, normalize_embeddings=True)
+        if requirement_embeddings is None:
+            model = _load_embedding_model()
+            requirement_embeddings = model.encode(
+                requirement_texts,
+                batch_size=32,
+                convert_to_numpy=True,
+                normalize_embeddings=True,
+                show_progress_bar=False,
+            )
         evidence_embeddings = _encode_resume_chunks(tuple(evidence_texts))
         matrix = np.dot(requirement_embeddings, evidence_embeddings.T)
 

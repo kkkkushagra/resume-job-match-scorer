@@ -15,6 +15,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 RUN python -c "from sentence_transformers import SentenceTransformer; SentenceTransformer('all-MiniLM-L6-v2')"
 
+ENV HF_HUB_OFFLINE=1
+
 COPY frontend/package.json frontend/package-lock.json* ./frontend/
 RUN apt-get update \
 	&& apt-get install -y --no-install-recommends nodejs npm \
