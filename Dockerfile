@@ -29,6 +29,6 @@ RUN cd frontend && npm run build
 
 EXPOSE 8000
 
-HEALTHCHECK --interval=30s --timeout=5s --start-period=60s --retries=3 CMD curl --fail http://localhost:$$PORT/api/health || exit 1
+HEALTHCHECK --interval=30s --timeout=5s --start-period=60s --retries=3 CMD curl --fail "http://localhost:$(printenv PORT)/api/health" || exit 1
 
-CMD ["sh", "-c", "exec uvicorn api.main:app --host 0.0.0.0 --port $$PORT"]
+CMD ["sh", "-c", "exec uvicorn api.main:app --host 0.0.0.0 --port $(printenv PORT)"]
